@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CivicAI DashBoard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+   
+</div>
+<style>
+     h1, h2 {
+            text-align: center;
+        }
+
+        .container {
+            width: 90%;
+            margin: auto;
+        }
+       
+
+  .card {
+            background: rgba(148, 213, 243, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+
+        .images {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .images img {
+            width: 180px;
+            border-radius: 10px;
+        }
+
+        .chart-box {
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px auto;
+            width: 80%;
+        }
+
+        canvas {
+            background: white;
+            border-radius: 10px;
+            padding: 10px;
+        }
+
+        iframe {
+            display: block;
+            margin: 20px auto;
+            border-radius: 15px;
+        }
+
+        .score {
+            text-align: center;
+            background: rgba(255,255,255,0.1);
+            padding: 10px;
+            border-radius: 10px;
+            margin: 10px;
+        }
+    </style>
+   
+</head>
+
+<body>
+
+<h1> CivicAI DashBoard</h1>
+
+<div class="container">
+
+{% for c in complaints %}
+    <div class="card">
+        <p><b>Type:</b> {{c.problem}}</p>
+        <p><b>Description:</b> {{c.description}}</p>
+        <p><b>Location:</b> {{c.location}}</p>
+
+        {% if c.get('image') %}
+        <div class="images">
+           <div class="images">
+
+    <div>
+        <p><b>Before</b></p>
+        {% if c.get('image') %}
+            <img src="{{ url_for('static', filename=c.get('image')) }}" width="500">
+        {% else %}
+            <p>No image</p>
+        {% endif %}
+    </div>
+
+    <div>
+        <p><b>After</b></p>
+
+        {% if c.problem == 'Road' %}
+            <img src="{{ url_for('static', filename='clean_road.jpg') }}" width="500" height="120">
+
+        {% elif c.problem == 'Garbage' %}
+            <img src="{{ url_for('static', filename='clean_garbage.jpg') }}" width="500" height="120">
+
+        {% elif c.problem == 'Water' %}
+            <img src="{{ url_for('static', filename='clean_water.jpg') }}" width="500" height="120">
+
+        {% endif %}
+
+    </div>
+
+</div>
+        {% endif %}
+    </div>
+{% endfor %}
+
+<h2>📊 Priority Scores</h2>
+
+<div style="display:flex; justify-content:center; gap:20px;">
+{% for key, value in scores.items() %}
+    <div class="score">
+        <h3>{{key}}</h3>
+        <p>{{value}}</p>
+    </div>
+{% endfor %}
+</div>
+
+<h2>📊 Complaint Analysis</h2>
+
+<div class="chart-box">
+    <canvas id="myChart"></canvas>
+</div>
+
+<h2>📍 Location Map</h2>
+
+<iframe
+    width="600"
+    height="400"
+    style="border:0"
+    loading="lazy"
+    allowfullscreen
+    src="https://www.google.com/maps?q={{ complaints[-1].location if complaints else 'Hyderabad' }}&output=embed">
+</iframe>
+
+</div>
+
+<script>
+    const counts = {{ counts_json | safe }};
+
+    new Chart(document.getElementById('myChart'), {
+        type: 'bar',
+        data: {
+            labels: ['Road', 'Water', 'Garbage'],
+            datasets: [{
+                label: 'Complaints',
+                data: [
+                    counts.Road,
+                    counts.Water,
+                    counts.Garbage
+                ],
+                backgroundColor: ['#ff7a18','#667eea','#43cea2']
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>

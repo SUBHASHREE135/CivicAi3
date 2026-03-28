@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CivicAI</title>
+
+</div>
+    <style>
+         body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+               background: url("{{ url_for('static', filename='bg.jpg') }}") no-repeat center center fixed;
+               background-size: 100%;
+            color: white;
+             display: flex;
+            justify-content: center;
+            align-items: center;
+             margin: 0;
+            height: 100vh;
+    
+        }
+
+        body::before {
+    content: "";
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+ 
+        .container {
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            width: 350px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+            color: white;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-size: 14px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 15px;
+            border-radius: 10px;
+            border: none;
+            outline: none;
+            background: rgba(255,255,255,0.2);
+            color: white;
+        }
+
+        input::placeholder, textarea::placeholder {
+            color: #ddd;
+        }
+
+        select {
+            color: black;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 12px;
+            background: #ff7a18;
+            background: linear-gradient(to right, #ff7a18, #ffb347);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+    <h2>🚀 CivicAI Complaint</h2>
+
+    <form action="/submit" method="post" enctype="multipart/form-data">
+        
+        <label>Problem Type</label>
+        <select name="problem">
+            <option>Road</option>
+            <option>Water</option>
+            <option>Garbage</option>
+        </select>
+
+        <label>Description</label>
+        <textarea name="description" placeholder="Describe the issue..."></textarea>
+
+        <label>Location</label>
+        <input type="text" name="location" placeholder="Enter location">
+
+        <label>Upload Image</label>
+        <input type="file" name="image">
+
+        <button type="submit">🚀 Submit Complaint</button>
+
+    </form>
+</div>
+
+</body>
+</html>
